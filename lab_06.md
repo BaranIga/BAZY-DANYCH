@@ -55,7 +55,7 @@ select nazwa, (ilosc*waga) as calkowitaWaga from zasob where year(dataPozyskania
 
 TWARDY SEN
 
-Zakładając że każdy rodzaj jedzenie to 30% odpadu wyświetl masę właściwego jedzenie oraz wagę odpadków:
+1) Zakładając że każdy rodzaj jedzenie to 30% odpadu wyświetl masę właściwego jedzenie oraz wagę odpadków:
 SELECT nazwa, waga * 0,7 AS masa_netto, waga * 0,3 AS masa_odpadkow FROM zasob WHERE rodzaj = "jedzenie";
 
 2) Wyświetl zasoby które nie mają rodzau:
