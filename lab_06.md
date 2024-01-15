@@ -1,10 +1,12 @@
-# zadanie 1.1
+# ROZBITEK
+
+### zadanie 1.1
 
 ```create table kreatura as select * from wikingowie.kreatura;```
 
-create table zasob as select * from wikingowie.zasob;
+```create table zasob as select * from wikingowie.zasob;```
 
-create table ekwipunek as select * from wikingowie.ekwipunek;
+```create table ekwipunek as select * from wikingowie.ekwipunek;```
 
 
 #zadanie 1.2
