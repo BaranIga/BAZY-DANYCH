@@ -1,6 +1,6 @@
 # zadanie 1.1
 
-'''create table kreatura as select * from wikingowie.kreatura;'''
+```create table kreatura as select * from wikingowie.kreatura;```
 
 create table zasob as select * from wikingowie.zasob;
 
