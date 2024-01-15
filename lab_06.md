@@ -1,6 +1,6 @@
 # zadanie 1.1
 
-create table kreatura as select * from wikingowie.kreatura;
+'''create table kreatura as select * from wikingowie.kreatura;'''
 
 create table zasob as select * from wikingowie.zasob;
 
@@ -29,7 +29,7 @@ select * from kreatura where rodzaj != "wiedzma" and udzwig >= 50;
 
 # zadanie 2.2
 
-'''select * from zasob where waga between 2 and 5;'''
+select * from zasob where waga between 2 and 5;
 
 
 # zadanie 2.3
