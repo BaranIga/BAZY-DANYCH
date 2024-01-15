@@ -1,4 +1,4 @@
-ROZBITEK
+Rozbitek
 
 1) Kopiowanie tabel kreatura, zasob, ekwipunek z bazy wikingowie do swojej:
 CREATE TABLE kreatura AS SELECT * FROM wikingowie.kreatura;
