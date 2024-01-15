@@ -1,57 +1,82 @@
-#  Zad 1
+# zadanie 1.1
 
-### 1) Napisać wyzwalacz który przed wstawieniem lub modyfikacją tabeli kreatura sprawdzi czy waga jest większa od 0:
-```SQL
-DELIMITER //
-CREATE TRIGGER waga_wieksza_od_0 
-BEFORE INSERT ON kreatura FOR EACH ROW 
-BEGIN
- IF NEW.waga <= 0
- THEN 
-  SET NEW.waga = 1;
- END IF;
-END
-//
-```
+create table kreatura as select * from wikingowie.kreatura;
 
-# Zad 2
+create table zasob as select * from wikingowie.zasob;
 
-### 1) Stwórz tabelę archiwum_wypraw z polami id_wyprawy, nazwa, data_rozpoczecia, data_zakonczenia, kierownik(varchar) do której będą wstawiane rekordy po usunięciu z tabeli wyprawa, Do kolumny kierownik wstawiana jest nazwa kreatury na podstawie usuwanego id_Kreatury:
-```SQL
-create table archiwum_wypraw(
-id_wyprawy int primary key auto_increment,
-nazwa varchar(55),
-data_rozpoczecia date,
-data_zakonczenia date,
-kierownik varchar(55));
+create table ekwipunek as select * from wikingowie.ekwipunek;
 
-delimiter //
-create trigger wyprawa_before_delete before delete on wyprawa
-  for each row
-  begin
-    insert into archiwum_wypraw
-    select w.id_wyprawy, w.nazwa, w.data_rozpoczecia, w.data_zakonczenia, k.nazwa
-    from wyprawa w join kreatura k on k.idKreatury=w.kierownik
-    where id_wyprawy=old.id_wyprawy;
-  end//
-delimiter ;
-```
 
-# Zad 3
+#zadanie 1.2
 
-### 1) Napisz procedurę o nazwie "eliksir_sily" ktora bedzie podnosiła wartość pola udźwig z tabeli kreatura o 20% na podstawie id_kreatury przekazywanego jako parametr:
-```SQL
-delimiter //
-create procedure eliksir_sily (in id int)
-  begin
-    update kreatura set udzwig = udzwig * 1.2 where idKreatury = id;
-  end//
-delimiter ;
-```
+select * from zasob;
 
-### 2) Napisz funkcję która będzie pobierała tekst i zwracała go z wielkich liter
-```SQL
-create function wielkie_litery (t text)
-  returns text
-  return upper(t);
-```
+
+#zadanie 1.3 
+
+select * from zasob where rodzaj = 'jedzenie';
+
+
+# zadanie 1.4 
+
+select idZasobu, ilosc from zasob where idZasobu in (1,3,5);
+
+
+# zadanie 2.1
+
+select * from kreatura where rodzaj != "wiedzma" and udzwig >= 50;
+
+
+# zadanie 2.2
+
+'''select * from zasob where waga between 2 and 5;'''
+
+
+# zadanie 2.3
+
+select * from kreatura where nazwa like "%or%" and udzwig between 30 and 70;
+
+
+# zadanie 3.1
+
+select * from zasob where month(dataPozyskania) = 7 or month(dataPozyskania) = 8;
+
+
+# zadanie 3.2
+
+select * from zasob where rodzaj is not null order by waga asc;
+
+
+# zadanie 3.3
+
+select * from kreatura order by dataUr desc limit 5;
+
+
+# zadanie 4.1
+
+select distinct rodzaj from zasob;
+
+
+# zadanie 4.2
+
+select concat(nazwa, 'to id=', idKreatury) from kreatura;
+
+
+# zadanie 4.3
+
+select nazwa, (ilosc*waga) as waga_calkowita from zasob where year(dataPozyskania) between 2000 and 2007;
+
+
+# zadanie 5.1
+
+select nazwa, waga*0.7 as masa_netto, waga*0.3 as waga_odpadkow from zasob where rodzaj='jedzenie';
+
+
+# zadanie 5.2
+
+select * from zasob where rodzaj is null;
+
+
+# zadanie 5.3
+
+select distinct * from zasob where nazwa like 'Ba%' or nazwa like '%os' order by rodzaj asc;
