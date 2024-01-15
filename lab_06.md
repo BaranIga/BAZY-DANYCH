@@ -1,65 +1,57 @@
-Rozbitek
+#  Zad 1
 
-1) Kopiowanie tabel kreatura, zasob, ekwipunek z bazy wikingowie do swojej:
-CREATE TABLE kreatura AS SELECT * FROM wikingowie.kreatura;
+### 1) Napisać wyzwalacz który przed wstawieniem lub modyfikacją tabeli kreatura sprawdzi czy waga jest większa od 0:
+```SQL
+DELIMITER //
+CREATE TRIGGER waga_wieksza_od_0 
+BEFORE INSERT ON kreatura FOR EACH ROW 
+BEGIN
+ IF NEW.waga <= 0
+ THEN 
+  SET NEW.waga = 1;
+ END IF;
+END
+//
+```
 
-2) Wypisanie rekordow z tabeli zasob:
-SELECT * FROM zasob;
+# Zad 2
 
-3) Wypisanie rekordow z tabeli zasob gdzie typ to jedzenie:
-SELECT * FROM zasob WHERE rodzaj = "jedzenie";
+### 1) Stwórz tabelę archiwum_wypraw z polami id_wyprawy, nazwa, data_rozpoczecia, data_zakonczenia, kierownik(varchar) do której będą wstawiane rekordy po usunięciu z tabeli wyprawa, Do kolumny kierownik wstawiana jest nazwa kreatury na podstawie usuwanego id_Kreatury:
+```SQL
+create table archiwum_wypraw(
+id_wyprawy int primary key auto_increment,
+nazwa varchar(55),
+data_rozpoczecia date,
+data_zakonczenia date,
+kierownik varchar(55));
 
-4) Wypisz idZasobu, ilosc dla kreatur o id 1,3,5:
-SELECT idZasobu, ilosc FROM zasob, kreatura WHERE idKreatury in (1, 3, 5);
+delimiter //
+create trigger wyprawa_before_delete before delete on wyprawa
+  for each row
+  begin
+    insert into archiwum_wypraw
+    select w.id_wyprawy, w.nazwa, w.data_rozpoczecia, w.data_zakonczenia, k.nazwa
+    from wyprawa w join kreatura k on k.idKreatury=w.kierownik
+    where id_wyprawy=old.id_wyprawy;
+  end//
+delimiter ;
+```
 
+# Zad 3
 
+### 1) Napisz procedurę o nazwie "eliksir_sily" ktora bedzie podnosiła wartość pola udźwig z tabeli kreatura o 20% na podstawie id_kreatury przekazywanego jako parametr:
+```SQL
+delimiter //
+create procedure eliksir_sily (in id int)
+  begin
+    update kreatura set udzwig = udzwig * 1.2 where idKreatury = id;
+  end//
+delimiter ;
+```
 
-KOKOS?
-
-1) Wyświetl kreatury które nie są wiedźmą i dźwigają co najmniej 50kg:
-SELECT * FROM kreatura WHERE rodzaj != "wiedzma" AND udzwig >= 50;
-
-2) Wyświetl zasoby które ważą pomiędzy 2 a 5kg:
-SELECT * FROM zasob WHERE waga > 2 AND waga < 5;
-
-3) Wyświetl kreatury których nazwa zawiera or i które dźwigają między 30kg a 70kg:
-SELECT * FROM kreatura WHERE nazwa LIKE "%or%" AND udzwig > 30 AND udzwig < 70;
-
-
-
-HAMAK
-
-1) Wyświetl zasoby które zostały pozyskane w miesiącu lipcu i sierpniu:
-SELECT * FROM zasob WHERE MONTH(dataPozyskania) = 7 OR MONTH(dataPozyskania) = 8;
-
-2) Wyświetl zasoby które mają zdefiniowany rodzaj od najlżejszego do najcięższego:
-SELECT * FROM zasob WHERE rodzaj IS NOT NULL ORDER BY waga ASC;
-
-3) Wyświetl 5 najstarszych kreatur:
-SELECT * FORM kreatura ORDER BY dataUr DESC LIMIT 5;
-
-
-
-ZŁOTA RYBKA 
-
-1) Wyświetl unikalne rodzaje zasobów:
-SELECT DISTINCT rodzaj FROM kreatura;
-
-2) Wyświetl jako jedną kolumnę nazwę i rodzaj kreatury gdzie rodzaj rozpoczyna się od wi:
-SELECT concat(nazwa, "to id=", idKreatury) form kreatura;
-
-3) Wyświetl zasoby z całkowitą wagą danego zasobu (ilosc*waga) dla zasobow pozyskanych w latach 2000-2007:
-select nazwa, (ilosc*waga) as calkowitaWaga from zasob where year(dataPozyskania) between 2000 and 2007;
-
-
-
-TWARDY SEN
-
-1) Zakładając że każdy rodzaj jedzenie to 30% odpadu wyświetl masę właściwego jedzenie oraz wagę odpadków:
-SELECT nazwa, waga * 0,7 AS masa_netto, waga * 0,3 AS masa_odpadkow FROM zasob WHERE rodzaj = "jedzenie";
-
-2) Wyświetl zasoby które nie mają rodzau:
-SELECT * FROM zasob WHERE rodzaj IS NULL;
-
-3) Wyświetl wszystke unikalne rodzaje zasobów których nazwa zaczyna się od ba lub kończy na os, posortuj alfabetycznie:
-SELECT DISTINCT rodzaj FROM zasob WHERE rodzaj LIKE "Ba%" OR rodzaj LIKE "%os" ORDER BY rodzaj ASC;
+### 2) Napisz funkcję która będzie pobierała tekst i zwracała go z wielkich liter
+```SQL
+create function wielkie_litery (t text)
+  returns text
+  return upper(t);
+```
