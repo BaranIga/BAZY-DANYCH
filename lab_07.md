@@ -2,19 +2,19 @@
 
 ### zadanie 1.1
 
-```
+```SQL
 select round(avg(waga), 2) as srednia_waga from kreatura where rodzaj = 'wiking';
 ```
 
 ### zadanie 1.2
 
-```
+```SQL
 select round(avg(waga), 2) as srednia_waga from kreatura where rodzaj = 'wiking';
 ```
 
 ### zadanie 1.3
 
-```
+```SQL
 select round(avg(year(dataUr)), 2) as sredni_wiek, rodzaj from kreatura group by rodzaj;
 ```
 
@@ -23,19 +23,19 @@ select round(avg(year(dataUr)), 2) as sredni_wiek, rodzaj from kreatura group by
 
 ### zadanie 2.1
 
-```
+```SQL
 select round(avg(waga), 2) as suma_wag, rodzaj from zasob where rodzaj is not null group by rodzaj;
 ```
 
 ### zadanie 2.2
 
-```
+```SQL
 select nazwa, round(avg(waga), 2) as srednia_waga from zasob where ilosc >= 4 group by nazwa having srednia_waga > 10;
 ```
 
 ### zadanie 2.3
 
-```
+```SQL
 select rodzaj, count(distinctrow(nazwa)) as nazwa from zasob;
 ```
 
@@ -44,14 +44,14 @@ select rodzaj, count(distinctrow(nazwa)) as nazwa from zasob;
 
 ### zadanie 3.1
 
-```
+```SQL
 select k.nazwa, sum(e.ilosc) as niesione_rzeczy from kreatura k, ekwipunek e where k.idKreatury=e.idKreatury group by k.nazwa;
 ```
 
 
 ### zadanie 3.2
 
-```
+```SQL
 select k.nazwa, z.nazwa from kreatura k inner join 
 ekwipunek e on k.idKreatury=e.idKreatury inner join 
 zasob z on e.idZasobu=z.idZasobu;
@@ -59,7 +59,7 @@ zasob z on e.idZasobu=z.idZasobu;
 
 ### zadanie 3.3
 
-```
+```SQL
 select * from kreatura k left join 
 ekwipunek e on k.idKreatury=e.idKreatury where 
 e.idKreatury is null;
@@ -74,7 +74,7 @@ idKreatury is not null);
 
 ### zadanie 4.1
 
-```
+```SQL
 select k.nazwa, z.nazwa, k.dataUr from kreatura k inner join 
 ekwipunek e on k.idKreatury=e.idKreatury inner join 
 zasob z on e.idZasobu=z.idZasobu where dataUr like '%7%' and 
@@ -83,7 +83,7 @@ k.rodzaj = 'wiking';
 
 ### zadanie 4.2
 
-```
+```SQL
 select k.nazwa, k.dataUr as data_urodzenia, z.nazwa from kreatura k inner join 
 ekwipunek e on k.idKreatury=e.idKreatury inner join 
 zasob z on e.idZasobu=z.idZasobu where 
@@ -94,7 +94,7 @@ data_urodzenia desc limit 5;
 
 ### zadanie 4.3
 
-```
+```SQL
 select concat(k.nazwa, ' - ', kr.nazwa) as 
 nazwy_kreatur, k.idKreatury, kr.idKreatury from kreatura k cross join 
 kreatura kr on k.idKreatury=kr.idKreatury + 5;
@@ -105,7 +105,7 @@ kreatura kr on k.idKreatury=kr.idKreatury + 5;
 
 ### zadanie 5.1
 
-```
+```SQL
 select k.rodzaj, avg(z.waga) as srednia_waga from kreatura k inner join 
 ekwipunek e on k.idKreatury=e.idKreatury inner join 
 zasob z on e.idZasobu=z.idZasobu group by k.rodzaj having avg(z.waga);
